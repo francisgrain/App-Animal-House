@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal House</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <style>
+
+        body {
+            background-image: url("https://i.ibb.co/f0R0hSS/pexels-jplenio-1103970.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        .card-custom {
+            width: 100%;
+            /* max-width: 400px;  Rimuovi questa linea */
+        }
+
+        .legend span {
+            margin-right: 10px;
+        }
+
+        .dati-vendita {
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Sezione per l'inserimento dei prodotti -->
+            <div class="col-md-4">
+                <div class="card card-custom mb-4">
+                    <div class="card-body">
+                        <h2 class="text-center">Form per l'inserimento dei prodotti</h2>
+                        <form action="/process" method="POST">
+                          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <div class="mb-3">
+                                <label for="nome" class="form-label">Nome prodotto</label>
+                                <input type="text" name="nome" id="nome" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="marca" class="form-label">Marca</label>
+                                <input type="text" name="marca" id="marca" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="descrizione" class="form-label">Descrizione</label>
+                                <textarea class="form-control" name="descrizione" id="descrizione" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="prezzo" class="form-label">Prezzo</label>
+                                <input type="text" name="prezzo" id="prezzo" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="categoria" class="form-label">Categoria</label>
+                                <input type="text" name="categoria" id="categoria" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="url" class="form-label">URL immagine</label>
+                                <input type="text" name="url" id="url" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="url2" class="form-label">URL immagine 2</label>
+                                <input type="text" name="url2" id="url2" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="url3" class="form-label">URL immagine 3</label>
+                                <input type="text" name="url3" id="url3" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="url4" class="form-label">URL immagine 4</label>
+                                <input type="text" name="url4" id="url4" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="pezzi" class="form-label">Quantità</label>
+                                <input type="text" name="pezzi" id="pezzi" class="form-control" required>
+                            </div>
+                            <div class="mb-3 text-center">
+                                <button type="submit" class="btn btn-primary">Inserisci</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sezione delle azioni e dati di vendita allargata -->
+            <div class="col-md-8">
+                <div class="row">
+                    <!-- Azioni -->
+                    <div class="col-md-6">
+                        <div class="card card-custom mb-4">
+                            <div class="card-body text-center">
+                                <h5>Azioni</h5>
+                                <a href="/magazzino" class="btn btn-secondary mb-2" style="width: 100%;">Vai al magazzino</a>
+                                <a href="/download_csv" class="btn btn-info" style="width: 100%;">Scarica CSV dei Prodotti</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sezione della tabella dei dati di vendita allargata -->
+                <div class="legend text-center">
+                    <span class="dati-vendita"><h3>Dati di vendita</h3></span>
+                        <span class="badge bg-success">Articolo più venduto</span>
+                        <span class="badge bg-danger">Articolo meno venduto</span>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>ID</td>
+                            <td>Nome</td>
+                            <td>Marca</td>
+                            <td>Pezzi</td>
+                            <td>Pezzi venduti</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pr in listaPr %}
+                            {% if pr[1] == prodottoMax %}
+                            <tr class="table-success">
+                            {% elif pr[1] == prodottoMin %}
+                            <tr class="table-danger">
+                            {% else %}
+                            <tr>
+                            {% endif %}
+                            <th scope="row">{{ pr[0] }}</th>
+                            <td>{{ pr[1] }}</td>
+                            <td>{{ pr[2] }}</td>
+                            <td>{{ pr[3] }}</td>
+                            <td>{{ pr[4] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <!-- Sezione dei grafici sotto i dati di vendita -->
+                <div class="card card-custom mb-4">
+                    <div class="card-body">
+                        <h1 class="text-center">Statistiche di vendita</h1>
+                        <img src="{{ url_for('plot_png') }}" alt="Grafico combinato a Barre e Torta" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
