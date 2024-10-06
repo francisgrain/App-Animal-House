@@ -1,5 +1,5 @@
 <h1>Animal House - Application created at the end of the Python programming course - TalentForm</h1>
-<h2>Application created with Python and Flusk for managing a warehouse of a Petstore with the input of quantity, price, description, technical specifications and images, connected to a MySQL database for warehouse management with implementation of a user/customer interface that emulates the typical e-commerce store to purchase items with order summary. It includes a detailed sales statistics page, providing insights into sales performance and trends.</h2>
+<h2>Application created with Python and Flusk for managing a warehouse of a Petstore with the input of quantity, price, description, technical specifications and images, connected to a MySQL database for warehouse management with implementation of a user/customer interface that emulates the typical e-commerce store to purchase items with order summary. It includes a detailed sales statistics page, providing insights into sales performance and trends and a useful button to donwload the entire list of all the records (products) in CSV format.</h2>
 
 <h3>Screenshots</h3>
 <img src="https://github.com/user-attachments/assets/3bebc497-2094-41a4-af5e-11fff3c116fd">
