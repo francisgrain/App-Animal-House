@@ -20,7 +20,7 @@ csrf = CSRFProtect(app)
 mydb = mysql.connector.connect(
     host=os.environ.get('DB_HOST', 'localhost'),
     user=os.environ.get('DB_USER', 'root'),
-    password=os.environ.get('DB_PASS', 'Contananne_2024!'),
+    password=os.environ.get('DB_PASS', ''),
     database=os.environ.get('DB_NAME', 'PyDb')
 )
 
@@ -28,7 +28,7 @@ mydb = mysql.connector.connect(
 mydb1 = mysql.connector.connect(
     host=os.environ.get('DB_HOST', 'localhost'),
     user=os.environ.get('DB_USER', 'root'),
-    password=os.environ.get('DB_PASS', 'Contananne_2024!'),
+    password=os.environ.get('DB_PASS', ''),
     database=os.environ.get('DB_NAME', 'PyDb')
 )
 '''
