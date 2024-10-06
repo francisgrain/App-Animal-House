@@ -1,4 +1,4 @@
-<h1>App-Animal-House Application created at the end of the Python programming course - TalentForm</h1>
+<h1>Animal House - Application created at the end of the Python programming course - TalentForm</h1>
 <h2>Application created with Python and Flusk for managing a warehouse of a Petstore with the input of quantity, price, description, technical specifications, and image, connected to a MySQL database for warehouse management with implementation of a user/customer interface that emulates the typical e-commerce store to purchase items with order summary. It includes a detailed sales statistics page, providing insights into sales performance and trends.</h2>
 
 <h3>Screenshots</h3>
