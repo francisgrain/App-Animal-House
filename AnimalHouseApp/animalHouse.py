@@ -420,23 +420,53 @@ def empty_cart():
     return redirect(url_for('store'))
 
 
-@app.route('/conferma_pagamento', methods=['GET', 'POST'])
+@app.route('/conferma_pagamento', methods=['POST'])
 def conferma_pagamento():
-    if request.method == 'POST':
-        cart = session.get('cart', [])
-        if not cart:
-            flash("Il carrello è vuoto. Aggiungi prodotti prima di procedere al pagamento.", "error")
-            return redirect(url_for('store'))
+    cart = session.get('cart', [])
 
-        # Qui puoi aggiungere la logica di pagamento, come l'invio dei dati a un sistema di pagamento esterno.
+    if not cart:
+        flash("Il carrello è vuoto!", "error")
+        return redirect(url_for('store'))
 
-        # Conferma il pagamento e svuota il carrello
-        session.pop('cart', None)
+    try:
+        mycursor = mydb.cursor()
+
+        # Itera sui prodotti nel carrello per aggiornare il database
+        for item in cart:
+            prodotto_id = item['id']
+            quantita_acquistata = item['quantita']
+
+            # Recupera le informazioni attuali del prodotto
+            mycursor.execute("SELECT pezzi, pezziVenduti FROM prodottipets WHERE id = %s", (prodotto_id,))
+            prodotto = mycursor.fetchone()
+
+            if prodotto:
+                pezzi_disponibili = prodotto[0]
+                pezzi_venduti = prodotto[1]
+
+                # Calcola i nuovi valori
+                nuovi_pezzi = pezzi_disponibili - quantita_acquistata
+                nuovi_pezzi_venduti = pezzi_venduti + quantita_acquistata
+
+                # Aggiorna il database
+                mycursor.execute(
+                    "UPDATE prodottipets SET pezzi = %s, pezziVenduti = %s WHERE id = %s",
+                    (nuovi_pezzi, nuovi_pezzi_venduti, prodotto_id)
+                )
+
+        # Conferma tutte le modifiche
+        mydb.commit()
+        session.pop('cart', None)  # Svuota il carrello
 
         flash("Pagamento completato con successo!", "success")
-        return redirect(url_for('pagamento_completato'))
+        return render_template('pagamento_completato.html')
 
-    return redirect(url_for('cart_summary'))
+    except mysql.connector.Error as err:
+        flash(f"Errore durante l'aggiornamento del database: {err}", "error")
+        return redirect(url_for('store'))
+
+    finally:
+        mycursor.close()
 
 
 @app.route('/pagamento_completato')
